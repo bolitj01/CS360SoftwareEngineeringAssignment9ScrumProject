@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.beetledev.www.BmiServiceSoapProxy;
+import com.beetledev.www.ConverterServiceSoapProxy;
 
 /**
  * The Patient class describes the traits of a health patient screening
@@ -38,19 +39,23 @@ public class Patient {
 	}
 	
 	/**
-	 * @return Calculated BMI, 0.0 if RemoteException was thrown
+	 * @return Calculated BMI, -1.0 if RemoteException was thrown
 	 */
 	public double calculateBMI() {
+		ConverterServiceSoapProxy bmiConverterProxy = new ConverterServiceSoapProxy();
 		BmiServiceSoapProxy bmiProxy = new BmiServiceSoapProxy();
-		double weightInKg = (double)weight * 0.453592;
-		double heightInCm = (double)height * 2.54;
+		double weightInKg = 0;
+		double heightInCm = 0;
 		try {
+			weightInKg = bmiConverterProxy.lbs2Kg(weight);
+			heightInCm = bmiConverterProxy.in2Cm(height);
 			return bmiProxy.getBmiValue(weightInKg, heightInCm);
-		} catch (RemoteException e) {
+		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0.0;
-		}
+			e1.printStackTrace();
+			System.out.println("RemoteException thrown in calculateBMI(), returning -1.0.\n\n" + e1.getMessage());
+			return -1.0;
+		} 
 	}
 	
 	/**
