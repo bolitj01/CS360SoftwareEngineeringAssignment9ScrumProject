@@ -16,18 +16,23 @@ import com.beetledev.www.ConverterServiceSoapProxy;
  */
 public class Patient {
 	private String name;
-	private Date dateOfScreening;
+	private String dateOfScreening;
 	private int age;
-	private int height;
+	private String height;
 	private int weight;
 	private int cholesterol;
 	private int systolic;
 	private int diastolic;
+	private double bmi;
+	private String cholesterolClassification;
+	private String bmiClassification;
+	private String bloodPressureClassification;
 	
 	/**
 	 * Constructor which defines a new patient with the given input parameters
 	 */
-	public Patient(String _name, Date _date, int _age, int _height, int _weight, int _cholesterol, int _systolic, int _diastolic) {
+	public Patient(String _name, String _date, int _age, String _height, int _weight, double _bmi, int _cholesterol, int _systolic, 
+			int _diastolic, String _cholesterolClassification, String _bmiClassification, String _bloodPressureClassification) {
 		name = _name; 
 		dateOfScreening = _date;
 		age = _age;
@@ -36,93 +41,46 @@ public class Patient {
 		cholesterol = _cholesterol;
 		systolic = _systolic;
 		diastolic = _diastolic;
+		bmi = _bmi;
+		cholesterolClassification = _cholesterolClassification;
+		bmiClassification = _bmiClassification;
+		bloodPressureClassification = _bloodPressureClassification;
 	}
 	
-	/**
-	 * @return Calculated BMI, -1.0 if RemoteException was thrown
-	 */
-	public double calculateBMI() {
-		ConverterServiceSoapProxy bmiConverterProxy = new ConverterServiceSoapProxy();
-		BmiServiceSoapProxy bmiProxy = new BmiServiceSoapProxy();
-		double weightInKg = 0;
-		double heightInCm = 0;
-		try {
-			weightInKg = bmiConverterProxy.lbs2Kg(weight);
-			heightInCm = bmiConverterProxy.in2Cm(height);
-			return bmiProxy.getBmiValue(weightInKg, heightInCm);
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			System.out.println("RemoteException thrown in calculateBMI(), returning -1.0.\n\n" + e1.getMessage());
-			return -1.0;
-		} 
+	public String getDate(){
+		return dateOfScreening;
 	}
 	
-	/**
-	 * Determines the patient's cholesterol classification based on their cholesterol level
-	 * @return The patient's cholesterol classification
-	 */
-	public String getCholesterolClassification() {
-		if (cholesterol >= 240) {
-			return "HIGH";
-		} else if ((200 <= cholesterol) && (cholesterol <= 239)) {
-			return "BORDERLINE HIGH";
-		} else {
-			return "DESIRABLE";
-		}
+	public String getCholesterolClassification(){
+		return cholesterolClassification;
 	}
 	
-	/**
-	 * Determines the patient's blood pressure classification based on their systolic and diastolic levels
-	 * @return The patient's blood pressure classification
-	 */
-	public String getBloodPressureClassification() {
-		if ((systolic > 180) || (diastolic > 110)) {
-			return "HYPERTENSIVE CRISIS";
-		} else if (((160 <= systolic) && (systolic <= 180)) || ((100 <= diastolic) && (diastolic <= 110))) {
-			return "STAGE 2 HYPERTENSION";
-		} else if (((140 <= systolic) && (systolic <= 159)) || ((90 <= diastolic) && (diastolic <= 99))) {
-			return "STAGE 1 HYPERTENSION";
-		} else if (((120 <= systolic) && (systolic <= 139)) || ((80 <= diastolic) && (diastolic <= 89))) {
-			return "PREHYPERTENSION";
-		} else {
-			return "NORMAL";
-		}
+	public String getBMIClassification(){
+		return bmiClassification;
 	}
 	
-	/**
-	 * Determines the patient's BMI classification based on their BMI level
-	 * @return The patient's BMI classification
-	 */
-	public String getBMIClassification() {
-		double bmi = calculateBMI();
-		if (bmi >= 30.0) {
-			return "OBESE";
-		} else if ((25.0 <= bmi) && (bmi <= 29.9)) {
-			return "OVERWEIGHT";
-		} else if ((18.5 <= bmi) && (bmi <= 24.9)) {
-			return "NORMAL";
-		} else {
-			return "UNDERWEIGHT";
-		}
+	public String getBloodPressureClassification(){
+		return bloodPressureClassification;
 	}
 	
-	/**
-	 * Displays a report of the patient's screening in the console
-	 */
-	public void displayPatientReport() {
-		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-		String date = dateFormat.format(dateOfScreening);
-		int feet = height/12;
-		int remaining_inches = height % 12;
-		double bmi = calculateBMI();
-		DecimalFormat decim = new DecimalFormat("#.#");
-		
-		System.out.println("Health Screening for " + name + "\n");
-		System.out.println("Date: " + date);
-		System.out.println("Age: " + age + "\t\tHeight: " + feet + "\' " + remaining_inches + "\"\t\tWeight: " + weight + "\n");
-		System.out.println("Total Cholesterol: " + cholesterol + " " + getCholesterolClassification());
-		System.out.println("Body Mass Index: " + decim.format(bmi) + " " + getBMIClassification());
-		System.out.println("Blood Pressure: " + systolic + "/" + diastolic + " " + getBloodPressureClassification());
-	}
+	
+//	/**
+//	 * Displays a report of the patient's screening in the console
+//	 */
+//	public void displayPatientReport() {
+//		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+//		String date = dateFormat.format(dateOfScreening);
+//		int feet = height/12;
+//		int remaining_inches = height % 12;
+//		DecimalFormat decim = new DecimalFormat("#.#");
+//		
+//		System.out.println("Health Screening for " + name + "\n");
+//		System.out.println("Date: " + date);
+//		System.out.println("Age: " + age + "\t\tHeight: " + feet + "\' " + remaining_inches + "\"\t\tWeight: " + weight + "\n");
+//		System.out.println("Total Cholesterol: " + cholesterol + " " + getCholesterolClassification());
+//		System.out.println("Body Mass Index: " + decim.format(bmi) + " " + getBMIClassification());
+//		System.out.println("Blood Pressure: " + systolic + "/" + diastolic + " " + getBloodPressureClassification());
+//	}
+	
+	
 }
