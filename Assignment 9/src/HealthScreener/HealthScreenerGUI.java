@@ -126,6 +126,7 @@ public class HealthScreenerGUI extends JFrame{
 		feetPanel.add(heightFeetTextField, BorderLayout.WEST);
 
 		JLabel feetSymbol = new JLabel("Feet");
+		feetSymbol.setBorder(new EmptyBorder(0,2,0,0));
 		feetPanel.add(feetSymbol, BorderLayout.EAST);
 
 		heightPanel.add(feetPanel);
@@ -140,6 +141,7 @@ public class HealthScreenerGUI extends JFrame{
 		inchesPanel.add(heightInchesTextField, BorderLayout.WEST);
 
 		JLabel inchesSymbol = new JLabel("Inches");
+		inchesSymbol.setBorder(new EmptyBorder(0,2,0,0));
 		inchesPanel.add(inchesSymbol, BorderLayout.EAST);
 
 		heightPanel.add(inchesPanel);
