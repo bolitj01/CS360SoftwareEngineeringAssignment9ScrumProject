@@ -225,7 +225,8 @@ public class HealthScreenerGUI extends JFrame{
 		doneButton.setBackground(textFieldColor);
 		controlPanel.add(doneButton);
 
-		JButton printResultsButton = new JButton("Print Today's Results");
+		JButton printResultsButton = new JButton("Print Previous Day Results");
+		printResultsButton.setEnabled(false);
 		printResultsButton.setBackground(textFieldColor);
 		controlPanel.add(printResultsButton);
 
