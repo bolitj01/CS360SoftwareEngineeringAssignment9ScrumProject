@@ -275,7 +275,8 @@ public class HealthScreenerGUI extends JFrame{
 								weight, bmi, cholesterol, systolic, diastolic, cholesterolClassification, bmiClassification, 
 								bloodPressureClassification);
 						patients.add(patient);
-						HealthScreenUtility.tempScreenReport(patients);
+						ScreenResults results = new ScreenResults(currentDate,patients);
+						results.displaySummaryReport();
 					}
 				}
 
