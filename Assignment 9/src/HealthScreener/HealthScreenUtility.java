@@ -84,7 +84,7 @@ public final class HealthScreenUtility {
 	public static void tempScreenReport(ArrayList<Patient> patients){
 		System.out.println("Health Screening Results\n\n" +
 				"Date: " + patients.get(0).getDate() + 
-				"\nNumber of Individuals Screened: " + patients.size());
+				"\nNumber of Individuals Screened: " + patients.size() + "\n");
 		
 		int desirableCount = 0;
 		int borderlineCount = 0;
