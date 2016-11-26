@@ -8,13 +8,13 @@ import com.beetledev.www.ConverterServiceSoapProxy;
 
 public final class HealthScreenUtility {
 	
-	private HealthScreenUtility(){
+	public HealthScreenUtility(){
 	}
 	
 	/**
 	 * @return Calculated BMI, -1.0 if RemoteException was thrown
 	 */
-	public static double calculateBMI(int weight, double height) {
+	public double calculateBMI(int weight, double height) {
 		ConverterServiceSoapProxy bmiConverterProxy = new ConverterServiceSoapProxy();
 		BmiServiceSoapProxy bmiProxy = new BmiServiceSoapProxy();
 		double weightInKg = 0;
@@ -35,7 +35,7 @@ public final class HealthScreenUtility {
 	 * Determines the patient's cholesterol classification based on their cholesterol level
 	 * @return The patient's cholesterol classification
 	 */
-	public static String getCholesterolClassification(int cholesterol) {
+	public String getCholesterolClassification(int cholesterol) {
 		if (cholesterol >= 240) {
 			return "HIGH";
 		} else if ((200 <= cholesterol) && (cholesterol <= 239)) {
@@ -49,7 +49,7 @@ public final class HealthScreenUtility {
 	 * Determines the patient's blood pressure classification based on their systolic and diastolic levels
 	 * @return The patient's blood pressure classification
 	 */
-	public static String getBloodPressureClassification(int systolic, int diastolic) {
+	public String getBloodPressureClassification(int systolic, int diastolic) {
 		if ((systolic > 180) || (diastolic > 110)) {
 			return "HYPERTENSIVE CRISIS";
 		} else if (((160 <= systolic) && (systolic <= 180)) || ((100 <= diastolic) && (diastolic <= 110))) {
@@ -67,7 +67,7 @@ public final class HealthScreenUtility {
 	 * Determines the patient's BMI classification based on their BMI level
 	 * @return The patient's BMI classification
 	 */
-	public static String getBMIClassification(int weight, double height) {
+	public String getBMIClassification(int weight, double height) {
 		double bmi = calculateBMI(weight, height);
 		if (bmi >= 30.0) {
 			return "OBESE";
@@ -81,7 +81,7 @@ public final class HealthScreenUtility {
 	}
 	
 	
-	public static void tempScreenReport(ArrayList<Patient> patients){
+	public void tempScreenReport(ArrayList<Patient> patients){
 		System.out.println("Health Screening Results\n\n" +
 				"Date: " + patients.get(0).getDate() + 
 				"\nNumber of Individuals Screened: " + patients.size() + "\n");
