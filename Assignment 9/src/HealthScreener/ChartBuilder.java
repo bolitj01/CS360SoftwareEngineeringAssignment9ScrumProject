@@ -1,3 +1,18 @@
+/**
+ * Usage:
+ * 
+ * Total Cholesterol:	{Desirable, Borderline High, High};
+ * Body Mass Index:		{Underweight, Normal, Overweight, Obese};
+ * Blood Pressure:		{Normal, Prehypertension, Stage 1 Hypertension, Stage 2 Hypertension, Hypertensive Crisis};
+ * 
+ * int[] tcData = {3, 3, 3};
+ * int[] bmiData = {1, 7, 1, 2};
+ * int[] bpData = {3, 4, 4, 2, 1};
+ * 
+ * new ChartBuilder(tcData, bmiData, bpData).createPage();
+ * 
+ */
+
 package HealthScreener;
 
 
@@ -24,7 +39,18 @@ public class ChartBuilder {
 	private int[] bloodPressureData;
 	
 	/**
-	 * Default Constructor
+	 * Usage:
+	 * 
+	 * Total Cholesterol:	{Desirable, Borderline High, High};
+	 * Body Mass Index:		{Underweight, Normal, Overweight, Obese};
+	 * Blood Pressure:		{Normal, Prehypertension, Stage 1 Hypertension, Stage 2 Hypertension, Hypertensive Crisis};
+	 * 
+	 * int[] tcData = {3, 3, 3};
+	 * int[] bmiData = {1, 7, 1, 2};
+	 * int[] bpData = {3, 4, 4, 2, 1};
+	 * 
+	 * new ChartBuilder(tcData, bmiData, bpData).createPage();
+	 * 
 	 */
 	public ChartBuilder(){
 		totalCholesterolData = new int[3];
@@ -33,6 +59,18 @@ public class ChartBuilder {
 	}
 	
 	/**
+	 * Usage:
+	 * 
+	 * Total Cholesterol:	{Desirable, Borderline High, High};
+	 * Body Mass Index:		{Underweight, Normal, Overweight, Obese};
+	 * Blood Pressure:		{Normal, Prehypertension, Stage 1 Hypertension, Stage 2 Hypertension, Hypertensive Crisis};
+	 * 
+	 * int[] tcData = {3, 3, 3};
+	 * int[] bmiData = {1, 7, 1, 2};
+	 * int[] bpData = {3, 4, 4, 2, 1};
+	 * 
+	 * new ChartBuilder(tcData, bmiData, bpData).createPage();
+	 * 
 	 * 
 	 * @param tcData Total Cholesterol data array
 	 * @param bmiData Body Mass Index data array
