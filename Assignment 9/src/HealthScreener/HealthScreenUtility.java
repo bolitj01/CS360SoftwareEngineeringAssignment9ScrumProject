@@ -14,9 +14,12 @@ public final class HealthScreenUtility {
 	/**
 	 * @return Calculated BMI, -1.0 if RemoteException was thrown
 	 */
-	public double calculateBMI(int weight, double height) {
+	public double calculateBMI(int weight, double height, String serviceURL) {
 		ConverterServiceSoapProxy bmiConverterProxy = new ConverterServiceSoapProxy();
 		BmiServiceSoapProxy bmiProxy = new BmiServiceSoapProxy();
+		if (serviceURL != null) {
+			bmiConverterProxy.setEndpoint(serviceURL);
+		}
 		double weightInKg = 0;
 		double heightInCm = 0;
 		try {
@@ -67,8 +70,8 @@ public final class HealthScreenUtility {
 	 * Determines the patient's BMI classification based on their BMI level
 	 * @return The patient's BMI classification
 	 */
-	public String getBMIClassification(int weight, double height) {
-		double bmi = calculateBMI(weight, height);
+	public String getBMIClassification(int weight, double height, String serviceURL) {
+		double bmi = calculateBMI(weight, height, serviceURL);
 		if (bmi >= 30.0) {
 			return "OBESE";
 		} else if ((25.0 <= bmi) && (bmi <= 29.9)) {

@@ -449,8 +449,8 @@ public class HealthScreenerGUI extends JFrame{
 	public boolean classifyBMI(){
 		if (heightFeetIsValid && heightInchesIsValid && weightIsValid){
 			double heightInInches = heightFeet * 12 + heightInches;
-			bmi = HealthScreenUtility.calculateBMI(weight, heightInInches);
-			bmiClassification = HealthScreenUtility.getBMIClassification(weight, heightInInches);
+			bmi = HealthScreenUtility.calculateBMI(weight, heightInInches, null);
+			bmiClassification = HealthScreenUtility.getBMIClassification(weight, heightInInches, null);
 			bmiClassificationLabel.setText(String.format("%.1f %s",bmi, bmiClassification));
 			return true;
 		}
