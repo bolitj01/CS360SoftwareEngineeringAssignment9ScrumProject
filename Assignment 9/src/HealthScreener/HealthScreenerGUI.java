@@ -18,7 +18,6 @@ import javax.swing.border.EmptyBorder;
 public class HealthScreenerGUI extends JFrame{
 
 	private static final Color backColor = new Color(160, 200, 255);
-	private static final Color textFieldColor = new Color(200, 240, 255);
 
 	private JTextField nameTextField;
 	private JTextField ageTextField;
@@ -58,7 +57,11 @@ public class HealthScreenerGUI extends JFrame{
 	private String bloodPressureClassification;
 
 	public HealthScreenerGUI(){
-
+		
+		UIManager.put("TextField.background", Color.white);
+		
+		
+		
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 
 		Dimension d = new Dimension(400,380);
@@ -77,7 +80,6 @@ public class HealthScreenerGUI extends JFrame{
 		namePanel.add(nameHeader);
 
 		nameTextField = new JTextField("Name", 12);
-		nameTextField.setBackground(textFieldColor);
 		namePanel.add(nameTextField);
 
 		add(namePanel);
@@ -104,7 +106,6 @@ public class HealthScreenerGUI extends JFrame{
 		agePanel.add(ageHeader);
 
 		ageTextField = new JTextField(2);
-		ageTextField.setBackground(textFieldColor);
 		agePanel.add(ageTextField);
 
 		add(agePanel);
@@ -122,7 +123,6 @@ public class HealthScreenerGUI extends JFrame{
 
 		heightFeetTextField = new JTextField(3);
 		heightFeetTextField.setName("heightFeetTextField");
-		heightFeetTextField.setBackground(textFieldColor);
 		feetPanel.add(heightFeetTextField, BorderLayout.WEST);
 
 		JLabel feetSymbol = new JLabel("Feet");
@@ -137,7 +137,6 @@ public class HealthScreenerGUI extends JFrame{
 
 		heightInchesTextField = new JTextField(3);
 		heightInchesTextField.setName("heightInchesTextField");
-		heightInchesTextField.setBackground(textFieldColor);
 		inchesPanel.add(heightInchesTextField, BorderLayout.WEST);
 
 		JLabel inchesSymbol = new JLabel("Inches");
@@ -157,7 +156,6 @@ public class HealthScreenerGUI extends JFrame{
 
 		weightTextField = new JTextField(3);
 		weightTextField.setName("weightTextField");
-		weightTextField.setBackground(textFieldColor);
 		weightPanel.add(weightTextField);
 
 		add(weightPanel);
@@ -171,7 +169,6 @@ public class HealthScreenerGUI extends JFrame{
 
 		cholesterolTextField = new JTextField(3);
 		cholesterolTextField.setName("cholesterolTextField");
-		cholesterolTextField.setBackground(textFieldColor);
 		cholesterolPanel.add(cholesterolTextField);
 
 		cholesterolClassificationLabel = new JLabel();
@@ -203,7 +200,6 @@ public class HealthScreenerGUI extends JFrame{
 
 		bloodPressureSystolicTextField = new JTextField(3);
 		bloodPressureSystolicTextField.setName("bloodPressureSystolicTextField");
-		bloodPressureSystolicTextField.setBackground(textFieldColor);
 		bloodPressurePanel.add(bloodPressureSystolicTextField);
 
 		JLabel backslash = new JLabel("/");
@@ -211,7 +207,6 @@ public class HealthScreenerGUI extends JFrame{
 
 		bloodPressureDiastolicTextField = new JTextField(3);
 		bloodPressureDiastolicTextField.setName("bloodPressureDiastolicTextField");
-		bloodPressureDiastolicTextField.setBackground(textFieldColor);
 		bloodPressurePanel.add(bloodPressureDiastolicTextField);
 
 		bloodPressureClassificationLabel = new JLabel();
@@ -223,15 +218,26 @@ public class HealthScreenerGUI extends JFrame{
 		JPanel controlPanel = new JPanel(flowLeft);
 		controlPanel.setBackground(backColor);
 
-		JButton doneButton = new JButton("Done");
-		doneButton.setBackground(textFieldColor);
-		controlPanel.add(doneButton);
+		JButton saveButton = new JButton("Save");
+		controlPanel.add(saveButton);
 
-		JButton printResultsButton = new JButton("Print Previous Day Results");
-		printResultsButton.setEnabled(false);
-		printResultsButton.setBackground(textFieldColor);
-		controlPanel.add(printResultsButton);
+		JButton printButton = new JButton("Print");
+		controlPanel.add(printButton);
+		
+		JButton loadButton = new JButton("Load");
+		loadButton.setEnabled(false);
+		controlPanel.add(loadButton);
 
+		JButton quitButton = new JButton("Quit");
+		quitButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		controlPanel.add(quitButton);
+		
 		add(controlPanel);
 
 		setVisible(true);
@@ -249,15 +255,31 @@ public class HealthScreenerGUI extends JFrame{
 		};
 		nameTextField.addMouseListener(clearTextFieldOnFirstClickListener);
 
-		MouseAdapter classificationListener = new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
+		ActionListener classificationListener = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				name = validateAndRetrieveName();
+				if (name == null){
+					return;
+				}
 				
 				age = validateAndRetrieveAge();
+				if (age == -1){
+					return;
+				}
 
 				heightFeet = validateAndRetrieveHeightFeet();
+				if (heightFeet == -1){
+					return;
+				}
 				heightInches = validateAndRetrieveHeightInches();
+				if (heightInches == -1){
+					return;
+				}
 				weight = validateAndRetrieveWeight();
+				if (weight == -1){
+					return;
+				}
+				
 				boolean successBMI = classifyBMI();
 
 				cholesterol = validateAndRetrieveCholesterol();
@@ -268,25 +290,38 @@ public class HealthScreenerGUI extends JFrame{
 				boolean successBloodPressure = classifyBloodPressure();
 
 				if (successBMI && successCholesterol && successBloodPressure){
-					int confirmationResult = JOptionPane.showConfirmDialog(null, "Is this information correct?", "Finish Patient Screening", 
+					int confirmationResult = JOptionPane.showConfirmDialog(null, "Is this information correct?", "Save Patient Screening", 
 							JOptionPane.YES_NO_OPTION);
 					if (confirmationResult == JOptionPane.YES_OPTION){
 						Patient patient = new Patient(name, df.format(currentDate), age, heightFeet + "' " + heightInches + "\"", 
 								weight, bmi, cholesterol, systolic, diastolic, cholesterolClassification, bmiClassification, 
 								bloodPressureClassification);
 						patients.add(patient);
-						ScreenResults results = new ScreenResults(currentDate,patients);
-						results.displaySummaryReport();
 					}
 				}
 
 			}
 		};
 
-		doneButton.addMouseListener(classificationListener);
-
+		saveButton.addActionListener(classificationListener);
+		
+		ActionListener printListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ScreenResults results = new ScreenResults(currentDate,patients);
+				results.toString();
+				
+			}
+		};
+		
+		
+		System.out.println(currentDate.toString().replaceAll(" ", "_").replaceAll(":", "-") + ".txt");
+		
+		
+		
 	}
-
+	
 	private String validateAndRetrieveName(){
 		String name = nameTextField.getText();
 		if (name == null || name.isEmpty()){
@@ -350,7 +385,8 @@ public class HealthScreenerGUI extends JFrame{
 
 	public boolean classifyCholesterol(){
 		if (cholesterolIsValid){
-			cholesterolClassification = HealthScreenUtility.getCholesterolClassification(cholesterol);
+			HealthScreenUtility hsu = new HealthScreenUtility();
+			cholesterolClassification = hsu.getCholesterolClassification(cholesterol);
 			cholesterolClassificationLabel.setText(cholesterolClassification);
 			return true;
 		}
@@ -448,9 +484,10 @@ public class HealthScreenerGUI extends JFrame{
 	 */
 	public boolean classifyBMI(){
 		if (heightFeetIsValid && heightInchesIsValid && weightIsValid){
+			HealthScreenUtility hsu = new HealthScreenUtility();
 			double heightInInches = heightFeet * 12 + heightInches;
-			bmi = HealthScreenUtility.calculateBMI(weight, heightInInches, null);
-			bmiClassification = HealthScreenUtility.getBMIClassification(weight, heightInInches, null);
+			bmi = hsu.calculateBMI(weight, heightInInches, null);
+			bmiClassification = hsu.getBMIClassification(weight, heightInInches, null);
 			bmiClassificationLabel.setText(String.format("%.1f %s",bmi, bmiClassification));
 			return true;
 		}
@@ -518,7 +555,8 @@ public class HealthScreenerGUI extends JFrame{
 
 	public boolean classifyBloodPressure(){
 		if (systolicIsValid && diastolicIsValid){
-			bloodPressureClassification = HealthScreenUtility.getBloodPressureClassification(systolic, diastolic);
+			HealthScreenUtility hsu = new HealthScreenUtility();
+			bloodPressureClassification = hsu.getBloodPressureClassification(systolic, diastolic);
 			bloodPressureClassificationLabel.setText(bloodPressureClassification);
 			return true;
 		}

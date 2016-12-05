@@ -226,7 +226,7 @@ public class ScreenResults {
 	/**
 	 * Display a report of all of the patient screenings for the entire day to the console
 	 */
-	public void displaySummaryReport()
+	public String toString()
 	{
 		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 		String date = dateFormat.format(dateOfScreening);
@@ -248,6 +248,6 @@ public class ScreenResults {
 						 "STAGE 1 HYPERTENSION " + this.countStage1HypertensionBloodPressure() + "\n" + 
 						 "STAGE 2 HYPERTENSION " + this.countStage2HypertensionBloodPressure() + "\n" +
 						 "HYPERTENSION CRISIS " + this.countHypertensionCrisisBloodPressure() + "\n";
-		System.out.println(message);
+		return message;
 	}
 }
