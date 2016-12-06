@@ -4,89 +4,54 @@
 package HealthScreener;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 /**
  * @author Donovan Laptop-4k
  *
  */
 public class ResultsFileWriter {
-	private File file;
-	private PrintWriter writer;
-	
-	private static ResultsFileWriter instance = null;
+	private FileOutputStream fos;
+	private ObjectOutputStream oos;
+	private File dir;
 	
 	/**
 	 * Constructor of class
 	 */
-	public ResultsFileWriter()
+	public ResultsFileWriter(String filename)
 	{
-		
-		
-	}
-	
-	
-	/**
-	 * Opens the files to be written to
-	 * @param fileName - string of the file name/ file address if not in root
-	 * @return - true or false if the file was opened
-	 */
-	
-	public boolean openFile(String fileName)
-	{
-
-		try {
-			file = new File(fileName);
-			if(!file.exists())
-			{
-				file.createNewFile();
+		try{
+			dir = new File("ScreenResultsHistory");
+			boolean success = dir.mkdir();
+			if (success){
+				System.out.println("Made directory");
+				System.out.println(dir.getAbsolutePath());
 			}
-			writer = new PrintWriter(file);
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			fos = new FileOutputStream(dir.getAbsolutePath() + "/" + filename);
+			oos = new ObjectOutputStream(fos);
+		} catch (Exception e){
 			e.printStackTrace();
 		}
-		
-		return true;
 	}
 	
-	/**
-	 * writes the passed in string to the file
-	 * @param message - message to be written to the file
-	 * @return - if the text was successfully written to the file
-	 */
-	public boolean printToFile(String message)
-	{
-		if(writer == null)
-		{
-			System.out.println("Please call open before calling print");
-			return false;
+	public void saveScreenResults(ScreenResults screenResults){
+		try{
+			oos.writeObject(screenResults);
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-		
-		writer.println(message);
-		return true;
 	}
 	
-	/**
-	 * Closes the file
-	 * @return - returns true or false if the file was closed
-	 */
-	public boolean closeFile()
-	{
-		if(writer == null)
-		{
-			System.out.println("Please call open before calling close");
-			return false;
+	public void closeStreams(){
+		try{
+			if (fos != null){
+				fos.close();
+			}
+			if (oos != null){
+				oos.close();
+			}
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-		
-		writer.close();
-		return true;
 	}
 }

@@ -1,5 +1,6 @@
 package HealthScreener;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -14,7 +15,7 @@ import com.beetledev.www.ConverterServiceSoapProxy;
  * 
  * @author Caleb Gordon
  */
-public class Patient {
+public class Patient implements Serializable{
 	private String name;
 	private String dateOfScreening;
 	private int age;

@@ -225,14 +225,17 @@ public class HealthScreenerGUI extends JFrame{
 		controlPanel.add(printButton);
 		
 		JButton loadButton = new JButton("Load");
-		loadButton.setEnabled(false);
 		controlPanel.add(loadButton);
 
-		JButton quitButton = new JButton("Quit");
+		JButton quitButton = new JButton("Save and Exit");
 		quitButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ResultsFileWriter rfw = new ResultsFileWriter(currentDate.toString() + ".ser");
+				ScreenResults screenResults = new ScreenResults(currentDate, patients);
+				rfw.saveScreenResults(screenResults);
+				rfw.closeStreams();
 				System.exit(0);
 			}
 		});
@@ -297,6 +300,7 @@ public class HealthScreenerGUI extends JFrame{
 								weight, bmi, cholesterol, systolic, diastolic, cholesterolClassification, bmiClassification, 
 								bloodPressureClassification);
 						patients.add(patient);
+						clearFields();
 					}
 				}
 
@@ -309,35 +313,30 @@ public class HealthScreenerGUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				ScreenResults results = new ScreenResults(currentDate,patients);
-				System.out.println(results.toString());
-				
-				int[] cholesterolData = new int[3];
-				cholesterolData[0] = results.countDesirableCholesterol();
-				cholesterolData[1] = results.countBorderLineCholesterol();
-				cholesterolData[2] = results.countHighCholesterol();
-				
-				int[] bmiData = new int[4];
-				bmiData[0] = results.countUnderweightBMI();
-				bmiData[1] = results.countNormalBMI();
-				bmiData[2] = results.countOverweightBMI();
-				bmiData[3] = results.countObeseBMI();
-				
-				int[] bloodPressureData = new int[5];
-				bloodPressureData[0] = results.countNormalBloodPressure();
-				bloodPressureData[1] = results.countPrehypertensionBloodPressure();
-				bloodPressureData[2] = results.countStage1HypertensionBloodPressure();
-				bloodPressureData[3] = results.countStage2HypertensionBloodPressure();
-				bloodPressureData[4] = results.countHypertensionCrisisBloodPressure();
-				
-				new ChartBuilder(cholesterolData, bmiData, bloodPressureData).createPage();
+				results.generateReport();
 			}
 		};
 		
 		printButton.addActionListener(printListener);
 		
+		ActionListener loadListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ResultsFileReader rfr = new ResultsFileReader();
+				String[] fileNames = rfr.getFileNames(".ser");
+				for (String name: fileNames){
+					System.out.println(name);
+				}
+				ScreenResults screenResults = rfr.readScreenResults(fileNames[0] + ".ser");
+				screenResults.generateReport();
+			}
+		};
 		
-		System.out.println(currentDate.toString().replaceAll(" ", "_").replaceAll(":", "-") + ".txt");
+		loadButton.addActionListener(loadListener);
+		
 		
 		
 		
@@ -582,6 +581,21 @@ public class HealthScreenerGUI extends JFrame{
 			return true;
 		}
 		return false;
+	}
+	
+	public void clearFields(){
+		nameTextField.setText("");
+		ageTextField.setText("");
+		heightFeetTextField.setText("");
+		heightInchesTextField.setText("");
+		weightTextField.setText("");
+		cholesterolTextField.setText("");
+		bloodPressureSystolicTextField.setText("");
+		bloodPressureDiastolicTextField.setText("");
+		cholesterolClassificationLabel.setText("");
+		bmiClassificationLabel.setText("");
+		bloodPressureClassificationLabel.setText("");
+		
 	}
 
 }

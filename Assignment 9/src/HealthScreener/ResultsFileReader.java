@@ -1,98 +1,84 @@
 package HealthScreener;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ResultsFileReader {
-	private File file;
-	private Scanner reader;
+	private FileInputStream fis;
+	private ObjectInputStream ois;
+	private File dir;
 		
-	public ResultsFileReader()
-	{
-		
+	public ResultsFileReader() {
+		dir = new File("ScreenResultsHistory");
+		if (dir == null){
+			System.out.println("No past screenings have been saved.");
+		}
+		System.out.println(dir.getAbsolutePath());
 	}
 	
 	/**
-	 * Opens the file that is to be read from
-	 * @param fileName - string name of the file/ location if the file is address is not the root
-	 * @return - returns true or false if the read file was opened
+	 * Reads the SreenResults object from the file with the given fileName
 	 */
-	public boolean openFile(String fileName)
+	public ScreenResults readScreenResults(String fileName)
 	{
+		ScreenResults screenResults = null;
 		try {
-			file = new File(fileName);
-			reader = new Scanner(file);
-		} catch (FileNotFoundException e) {
+			System.out.println(dir.getAbsolutePath() + "/" + fileName);
+			fis = new FileInputStream(dir.getAbsolutePath() + "/" + fileName);
+			ois = new ObjectInputStream(fis);
+			screenResults = (ScreenResults)ois.readObject();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 		
-		return true;
-	}
-	
-	/**
-	 * Reads data from the file
-	 * @return - returns the string data that was read from the file
-	 */
-	public String readFile()
-	{
-		String message = "";
-		if(reader == null)
-		{
-			System.out.println("Please call open before calling read");
-			return "";
-		}
-		
-		while(reader.hasNextLine())
-		{
-			message += reader.nextLine();
-			message += "\n";
-		}
-		
-		return message;
+		return screenResults;
 	}
 	
 	/**
 	 * returns all of the files names that contain the extension passed
 	 * @param extension - the type of file that is looked for
-	 * @return - an ArrayList of type String with all of the file names with the extension
+	 * @return - an array of type String with all of the file names with the extension
 	 */
-	public ArrayList<String> getFileNames(String extension)
+	public String[] getFileNames(String extension)
 	{
 		
-		ArrayList<String> fileNames = new ArrayList<String>();
-		String workingDir = System.getProperty("user.dir");
-		File folder = new File(workingDir);
-		File [] files = folder.listFiles();
+		String[] list = dir.list();
 		
-		for(int i = 0; i < files.length; i++)
-		{
-			if(files[i].getName().contains(extension))
+		ArrayList<String> legitimateFileNames = new ArrayList<>();
+		
+		for(String fileName: list)
+		{	
+			if(fileName.contains(extension))
 			{
-				fileNames.add(files[i].getName().replace(extension, ""));
+				legitimateFileNames.add(fileName.replace(extension, ""));
 			}
 			
+		}
+		
+		String [] fileNames = new String[legitimateFileNames.size()];
+		for (int i = 0; i < fileNames.length; i++){
+			fileNames[i] = legitimateFileNames.get(i);
 		}
 		
 		return fileNames;
 	}
 	
 	/**
-	 * Closes teh file
-	 * @return - returns true or false if the file was closed
+	 * Closes the file input stream and object input stream
 	 */
-	public boolean closeFile()
+	public void closeStreams()
 	{
-		if(reader == null)
-		{
-			System.out.println("Please call open before calling close");
-			return false;
+		try{
+			if (fis != null){
+				fis.close();
+			}
+			if (ois != null){
+				ois.close();
+			}
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-		reader.close();
-		
-		return true;
 	}
 }
