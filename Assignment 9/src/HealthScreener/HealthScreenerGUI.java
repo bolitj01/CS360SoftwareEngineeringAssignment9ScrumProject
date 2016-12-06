@@ -310,10 +310,31 @@ public class HealthScreenerGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ScreenResults results = new ScreenResults(currentDate,patients);
-				results.toString();
+				System.out.println(results.toString());
 				
+				int[] cholesterolData = new int[3];
+				cholesterolData[0] = results.countDesirableCholesterol();
+				cholesterolData[1] = results.countBorderLineCholesterol();
+				cholesterolData[2] = results.countHighCholesterol();
+				
+				int[] bmiData = new int[4];
+				bmiData[0] = results.countUnderweightBMI();
+				bmiData[1] = results.countNormalBMI();
+				bmiData[2] = results.countOverweightBMI();
+				bmiData[3] = results.countObeseBMI();
+				
+				int[] bloodPressureData = new int[5];
+				bloodPressureData[0] = results.countNormalBloodPressure();
+				bloodPressureData[1] = results.countPrehypertensionBloodPressure();
+				bloodPressureData[2] = results.countStage1HypertensionBloodPressure();
+				bloodPressureData[3] = results.countStage2HypertensionBloodPressure();
+				bloodPressureData[4] = results.countHypertensionCrisisBloodPressure();
+				
+				new ChartBuilder(cholesterolData, bmiData, bloodPressureData).createPage();
 			}
 		};
+		
+		printButton.addActionListener(printListener);
 		
 		
 		System.out.println(currentDate.toString().replaceAll(" ", "_").replaceAll(":", "-") + ".txt");
