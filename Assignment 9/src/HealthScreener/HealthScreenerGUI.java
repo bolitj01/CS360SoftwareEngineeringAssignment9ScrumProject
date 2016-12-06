@@ -17,9 +17,12 @@ import javax.swing.border.EmptyBorder;
 
 public class HealthScreenerGUI extends JFrame{
 
-	private static final Color backColor = new Color(160, 200, 255);
+	public static final Color backColor = new Color(160, 200, 255);
 
-	private JTextField nameTextField;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	private JTextField nameFirstTextField;
+	private JTextField nameLastTextField;
 	private JTextField ageTextField;
 	private JTextField heightFeetTextField;
 	private JTextField heightInchesTextField;
@@ -32,6 +35,11 @@ public class HealthScreenerGUI extends JFrame{
 	private JLabel cholesterolClassificationLabel;
 	private JLabel bmiClassificationLabel;
 	private JLabel bloodPressureClassificationLabel;
+	
+	private JButton saveButton;
+	private JButton printButton;
+	private JButton loadButton;
+	private JButton exitButton;
 
 	private boolean heightFeetIsValid;
 	//Since inches can be left blank, this must be true initially, 
@@ -58,9 +66,11 @@ public class HealthScreenerGUI extends JFrame{
 
 	public HealthScreenerGUI(){
 		
+		HealthScreenerGUI thisGUI = this;
+		
 		UIManager.put("TextField.background", Color.white);
 		
-		
+		setUndecorated(true);
 		
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 
@@ -76,11 +86,14 @@ public class HealthScreenerGUI extends JFrame{
 		JPanel namePanel = new JPanel(flowLeft);
 		namePanel.setBackground(backColor);
 
-		JLabel nameHeader = new JLabel("Health Screening for ");
+		JLabel nameHeader = new JLabel("Health Screening for: ");
 		namePanel.add(nameHeader);
 
-		nameTextField = new JTextField("Name", 12);
-		namePanel.add(nameTextField);
+		nameFirstTextField = new JTextField("First Name", 7);
+		namePanel.add(nameFirstTextField);
+		
+		nameLastTextField = new JTextField("Last Name", 7);
+		namePanel.add(nameLastTextField);
 
 		add(namePanel);
 
@@ -145,6 +158,9 @@ public class HealthScreenerGUI extends JFrame{
 
 		heightPanel.add(inchesPanel);
 
+		JLabel confirmationLocationPointer = new JLabel(" ");
+		heightPanel.add(confirmationLocationPointer);
+		
 		add(heightPanel);
 
 		//Weight
@@ -218,28 +234,30 @@ public class HealthScreenerGUI extends JFrame{
 		JPanel controlPanel = new JPanel(flowLeft);
 		controlPanel.setBackground(backColor);
 
-		JButton saveButton = new JButton("Save");
+		saveButton = new JButton("Save");
 		controlPanel.add(saveButton);
 
-		JButton printButton = new JButton("Print");
+		printButton = new JButton("Print");
 		controlPanel.add(printButton);
 		
-		JButton loadButton = new JButton("Load");
+		loadButton = new JButton("Load");
 		controlPanel.add(loadButton);
 
-		JButton quitButton = new JButton("Save and Exit");
-		quitButton.addActionListener(new ActionListener() {
+		exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ResultsFileWriter rfw = new ResultsFileWriter(currentDate.toString() + ".ser");
-				ScreenResults screenResults = new ScreenResults(currentDate, patients);
-				rfw.saveScreenResults(screenResults);
-				rfw.closeStreams();
+				if (patients.size() != 0){
+					ResultsFileWriter rfw = new ResultsFileWriter(currentDate.toString() + ".ser");
+					ScreenResults screenResults = new ScreenResults(currentDate, patients);
+					rfw.saveScreenResults(screenResults);
+					rfw.closeStreams();
+				}
 				System.exit(0);
 			}
 		});
-		controlPanel.add(quitButton);
+		controlPanel.add(exitButton);
 		
 		add(controlPanel);
 
@@ -252,12 +270,21 @@ public class HealthScreenerGUI extends JFrame{
 		MouseAdapter clearTextFieldOnFirstClickListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				((JTextField)(e.getComponent())).setText("");
-				nameTextField.removeMouseListener(this);;
+				JTextField thisTextField = (JTextField)e.getComponent();
+				thisTextField.setText("");
+				thisTextField.removeMouseListener(this);
 			}
 		};
-		nameTextField.addMouseListener(clearTextFieldOnFirstClickListener);
+		nameFirstTextField.addMouseListener(clearTextFieldOnFirstClickListener);
 
+		nameLastTextField.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e){
+				JTextField thisTextField = (JTextField)e.getComponent();
+				thisTextField.setText("");
+				thisTextField.removeFocusListener(this);
+			}
+		});
+		
 		ActionListener classificationListener = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				name = validateAndRetrieveName();
@@ -274,33 +301,45 @@ public class HealthScreenerGUI extends JFrame{
 				if (heightFeet == -1){
 					return;
 				}
+				
 				heightInches = validateAndRetrieveHeightInches();
 				if (heightInches == -1){
 					return;
 				}
+				
 				weight = validateAndRetrieveWeight();
 				if (weight == -1){
 					return;
 				}
-				
-				boolean successBMI = classifyBMI();
 
 				cholesterol = validateAndRetrieveCholesterol();
-				boolean successCholesterol = classifyCholesterol();
+				if (cholesterol == -1){
+					return;
+				}	
 
 				systolic = validateAndRetrieveSystolic();
+				if (systolic == -1){
+					return;
+				}
 				diastolic = validateAndRetrieveDiastolic();
+				if (diastolic == -1){
+					return;
+				}
+				
+				boolean successBMI = classifyBMI();
+				boolean successCholesterol = classifyCholesterol();
 				boolean successBloodPressure = classifyBloodPressure();
 
 				if (successBMI && successCholesterol && successBloodPressure){
-					int confirmationResult = JOptionPane.showConfirmDialog(null, "Is this information correct?", "Save Patient Screening", 
-							JOptionPane.YES_NO_OPTION);
+					int confirmationResult =JOptionPane.showConfirmDialog(confirmationLocationPointer, "Is this information correct?", 
+							"Save Patient Screening", JOptionPane.YES_NO_OPTION);
 					if (confirmationResult == JOptionPane.YES_OPTION){
 						Patient patient = new Patient(name, df.format(currentDate), age, heightFeet + "' " + heightInches + "\"", 
 								weight, bmi, cholesterol, systolic, diastolic, cholesterolClassification, bmiClassification, 
 								bloodPressureClassification);
 						patients.add(patient);
 						clearFields();
+						nameFirstTextField.requestFocus();
 					}
 				}
 
@@ -313,7 +352,10 @@ public class HealthScreenerGUI extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				if (patients.size() == 0){
+					JOptionPane.showMessageDialog(null,  "No Screenings have been saved yet.", "Print Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				ScreenResults results = new ScreenResults(currentDate,patients);
 				results.generateReport();
 			}
@@ -327,11 +369,9 @@ public class HealthScreenerGUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				ResultsFileReader rfr = new ResultsFileReader();
 				String[] fileNames = rfr.getFileNames(".ser");
-				for (String name: fileNames){
-					System.out.println(name);
+				if (fileNames.length != 0){
+					new ScreeningSelectionWindow(thisGUI, fileNames);
 				}
-				ScreenResults screenResults = rfr.readScreenResults(fileNames[0] + ".ser");
-				screenResults.generateReport();
 			}
 		};
 		
@@ -343,12 +383,18 @@ public class HealthScreenerGUI extends JFrame{
 	}
 	
 	private String validateAndRetrieveName(){
-		String name = nameTextField.getText();
-		if (name == null || name.isEmpty()){
-			JOptionPane.showMessageDialog(null, "Please enter a name.", "Name Error", JOptionPane.ERROR_MESSAGE);
+		String firstName = nameFirstTextField.getText();
+		if (firstName == null || firstName.trim().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Please enter a first name.", "Name Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
-		return name;
+		
+		String lastName = nameLastTextField.getText();
+		if (firstName == null || firstName.trim().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Please enter a last name.", "Name Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return firstName + " " + lastName;
 	}
 	
 	private int validateAndRetrieveAge(){
@@ -584,7 +630,8 @@ public class HealthScreenerGUI extends JFrame{
 	}
 	
 	public void clearFields(){
-		nameTextField.setText("");
+		nameFirstTextField.setText("");
+		nameLastTextField.setText("");
 		ageTextField.setText("");
 		heightFeetTextField.setText("");
 		heightInchesTextField.setText("");
@@ -595,7 +642,37 @@ public class HealthScreenerGUI extends JFrame{
 		cholesterolClassificationLabel.setText("");
 		bmiClassificationLabel.setText("");
 		bloodPressureClassificationLabel.setText("");
+	}
+	
+	public void disableFields(){
+		nameFirstTextField.setEnabled(false);
+		nameLastTextField.setEnabled(false);
+		ageTextField.setEnabled(false);
+		heightFeetTextField.setEnabled(false);
+		heightInchesTextField.setEnabled(false);
+		weightTextField.setEnabled(false);
+		cholesterolTextField.setEnabled(false);
+		bloodPressureSystolicTextField.setEnabled(false);
+		bloodPressureDiastolicTextField.setEnabled(false);
+		saveButton.setEnabled(false);
+		printButton.setEnabled(false);
+		loadButton.setEnabled(false);
 		
+	}
+	
+	public void enableFields(){
+		nameFirstTextField.setEnabled(true);
+		nameLastTextField.setEnabled(true);
+		ageTextField.setEnabled(true);
+		heightFeetTextField.setEnabled(true);
+		heightInchesTextField.setEnabled(true);
+		weightTextField.setEnabled(true);
+		cholesterolTextField.setEnabled(true);
+		bloodPressureSystolicTextField.setEnabled(true);
+		bloodPressureDiastolicTextField.setEnabled(true);
+		saveButton.setEnabled(true);
+		printButton.setEnabled(true);
+		loadButton.setEnabled(true);
 	}
 
 }
