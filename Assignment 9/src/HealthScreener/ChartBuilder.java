@@ -31,8 +31,8 @@ import de.toolforge.googlechartwrapper.label.ChartTitle;
 
 public class ChartBuilder {
 	
-	final int CHART_WIDTH = 450;
-	final int CHART_HEIGHT = 300;
+	final int CHART_WIDTH = 600;
+	final int CHART_HEIGHT = 400;
 	
 	private int[] totalCholesterolData;
 	private int[] bodyMassIndexData;
