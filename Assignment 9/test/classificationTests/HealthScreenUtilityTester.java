@@ -1,4 +1,4 @@
-package healthScreener;
+package classificationTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

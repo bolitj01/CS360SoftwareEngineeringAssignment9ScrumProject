@@ -1,4 +1,4 @@
-package HealthScreener;
+package viewController;
 
 public class Main {
 

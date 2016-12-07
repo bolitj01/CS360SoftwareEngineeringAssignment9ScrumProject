@@ -1,8 +1,10 @@
-package HealthScreener;
+package classificationTests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import model.HealthScreenUtility;
 
 public class BloodPressureClassificationTester {
 	

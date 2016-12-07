@@ -1,4 +1,4 @@
-package HealthScreener;
+package model;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

@@ -1,10 +1,12 @@
 /**
  * 
  */
-package HealthScreener;
+package fileIO;
 
 
 import java.io.*;
+
+import model.ScreenResults;
 
 /**
  * @author Donovan Laptop-4k

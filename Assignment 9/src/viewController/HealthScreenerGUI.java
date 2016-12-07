@@ -500,7 +500,7 @@ public class HealthScreenerGUI extends JFrame{
 	 * Classifies the cholesterol based using HealthScreenUtility object helper methods.
 	 * Assigns classification to the cholesterol classification label.
 	 */
-	public boolean classifyCholesterol(){
+	private boolean classifyCholesterol(){
 		if (cholesterolIsValid){
 			HealthScreenUtility hsu = new HealthScreenUtility();
 			cholesterolClassification = hsu.getCholesterolClassification(cholesterol);
@@ -514,7 +514,7 @@ public class HealthScreenerGUI extends JFrame{
 	/**
 	 * Validates and parses patient height feet from text field 
 	 */
-	public int validateAndRetrieveHeightFeet(){
+	private int validateAndRetrieveHeightFeet(){
 		int feet;
 		try {
 			String feetString = heightFeetTextField.getText();
@@ -544,7 +544,7 @@ public class HealthScreenerGUI extends JFrame{
 	/**
 	 * Validates and parses patient height inches from text field.
 	 */
-	public double validateAndRetrieveHeightInches(){
+	private double validateAndRetrieveHeightInches(){
 		double inches;
 		try {
 			String inchesString = heightInchesTextField.getText();
@@ -574,7 +574,7 @@ public class HealthScreenerGUI extends JFrame{
 	/**
 	 * Validates and parses patient weight from text field.
 	 */
-	public int validateAndRetrieveWeight(){
+	private int validateAndRetrieveWeight(){
 		int weight;
 		try {
 			String weightString = weightTextField.getText();
@@ -607,7 +607,7 @@ public class HealthScreenerGUI extends JFrame{
 	 * Classifies the BMI using HealthScreenUtility object helper method
 	 * Assigns classification to BMI classification label
 	 */
-	public boolean classifyBMI(){
+	private boolean classifyBMI(){
 		if (heightFeetIsValid && heightInchesIsValid && weightIsValid){
 			HealthScreenUtility hsu = new HealthScreenUtility();
 			double heightInInches = heightFeet * 12 + heightInches;
@@ -622,7 +622,7 @@ public class HealthScreenerGUI extends JFrame{
 	/**
 	 * Validates and parses patient systolic blood pressure from text field.
 	 */
-	public int validateAndRetrieveSystolic(){
+	private int validateAndRetrieveSystolic(){
 		int systolic;
 		try{
 			String systolicString = bloodPressureSystolicTextField.getText();
@@ -655,7 +655,7 @@ public class HealthScreenerGUI extends JFrame{
 	/**
 	 * Validates and parses patient diastolic blood pressure from text field
 	 */
-	public int validateAndRetrieveDiastolic(){
+	private int validateAndRetrieveDiastolic(){
 		int diastolic;
 		try{
 			String diastolicString = bloodPressureDiastolicTextField.getText();
@@ -688,7 +688,7 @@ public class HealthScreenerGUI extends JFrame{
 	 * Classify blood pressure using HealthScreenUtility helper methods.
 	 * Assigns classification to blood pressure classification label
 	 */
-	public boolean classifyBloodPressure(){
+	private boolean classifyBloodPressure(){
 		if (systolicIsValid && diastolicIsValid){
 			HealthScreenUtility hsu = new HealthScreenUtility();
 			bloodPressureClassification = hsu.getBloodPressureClassification(systolic, diastolic);

@@ -1,7 +1,9 @@
-package HealthScreener;
+package fileIO;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import model.ScreenResults;
 
 public class ResultsFileReader {
 	private FileInputStream fis;

@@ -1,6 +1,10 @@
-package HealthScreener;
+package viewController;
 
 import javax.swing.*;
+
+import fileIO.ResultsFileReader;
+import model.ScreenResults;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +17,7 @@ public class ScreeningSelectionWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	public ScreeningSelectionWindow(HealthScreenerGUI healthScreenerGUI, String[] fileNames){
-		UIManager.put("Panel.background", HealthScreenerGUI.backColor);
+		UIManager.put("Panel.background", HealthScreenerGUI.BACKCOLOR);
 		UIManager.put("List.background", Color.white);
 //		UIManager.put("Label.background", HealthScreenerGUI.backColor);
 		

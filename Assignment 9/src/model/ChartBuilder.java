@@ -13,7 +13,7 @@
  * 
  */
 
-package HealthScreener;
+package model;
 
 
 import java.awt.Desktop;
