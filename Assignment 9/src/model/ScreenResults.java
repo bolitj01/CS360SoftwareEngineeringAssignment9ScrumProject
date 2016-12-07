@@ -1,4 +1,4 @@
-package HealthScreener;
+package model;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -26,13 +26,10 @@ public class ScreenResults implements Serializable{
 	 * calculates how many patients have desirable cholesterol
 	 * @return - amount of patients that have desirable cholesterol
 	 */
-	public int countDesirableCholesterol()
-	{
+	public int countDesirableCholesterol() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getCholesterolClassification().toUpperCase().equals("DESIRABLE"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getCholesterolClassification().toUpperCase().equals("DESIRABLE")) {
 				count++;
 			}
 		}
@@ -43,13 +40,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have border line cholesterol
 	 * @return - amount of patients with borderline high cholesterol
 	 */
-	public int countBorderLineCholesterol()
-	{
+	public int countBorderLineCholesterol() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getCholesterolClassification().toUpperCase().equals("BORDERLINE HIGH"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getCholesterolClassification().toUpperCase().equals("BORDERLINE HIGH")) {
 				count++;
 			}
 		}
@@ -60,13 +54,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have high colesterol
 	 * @return - amount of patients with high cholesterol
 	 */
-	public int countHighCholesterol()
-	{
+	public int countHighCholesterol() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getCholesterolClassification().toUpperCase().equals("HIGH"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getCholesterolClassification().toUpperCase().equals("HIGH")) {
 				count++;
 			}
 		}
@@ -77,13 +68,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have normal BMI value
 	 * @return - amount of patients with normal BMI values
 	 */
-	public int countNormalBMI()
-	{
+	public int countNormalBMI() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBMIClassification().toUpperCase().equals("NORMAL"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBMIClassification().toUpperCase().equals("NORMAL")) {
 				count++;
 			}
 		}
@@ -94,13 +82,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have overweight BMI values
 	 * @return - amount of patients with overweight BMI values
 	 */
-	public int countOverweightBMI()
-	{
+	public int countOverweightBMI() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBMIClassification().toUpperCase().equals("OVERWEIGHT"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBMIClassification().toUpperCase().equals("OVERWEIGHT")) {
 				count++;
 			}
 		}
@@ -111,13 +96,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have UNDERWEIGHT BMI values
 	 * @return - amount of patients with UNDERWEIGHT BMI values
 	 */
-	public int countUnderweightBMI()
-	{
+	public int countUnderweightBMI() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBMIClassification().toUpperCase().equals("UNDERWEIGHT"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBMIClassification().toUpperCase().equals("UNDERWEIGHT")) {
 				count++;
 			}
 		}
@@ -128,13 +110,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have UNDERWEIGHT BMI values
 	 * @return - amount of patients with UNDERWEIGHT BMI values
 	 */
-	public int countObeseBMI()
-	{
+	public int countObeseBMI() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBMIClassification().toUpperCase().equals("OBESE"))
-			{
+		for(Patient patient : patients ) {
+			if(patient.getBMIClassification().toUpperCase().equals("OBESE")) {
 				count++;
 			}
 		}
@@ -145,13 +124,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have NORMAL Blood Pressure values
 	 * @return - amount of patients with NORMAL Blood Pressure values
 	 */
-	public int countNormalBloodPressure()
-	{
+	public int countNormalBloodPressure() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBloodPressureClassification().toUpperCase().equals("NORMAL"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBloodPressureClassification().toUpperCase().equals("NORMAL")) {
 				count++;
 			}
 		}
@@ -162,13 +138,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have STAGE 1 HYPERTENSION Blood Pressure values
 	 * @return - amount of patients with STAGE 1 HYPERTENSION Blood Pressure values
 	 */
-	public int countStage1HypertensionBloodPressure()
-	{
+	public int countStage1HypertensionBloodPressure() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBloodPressureClassification().toUpperCase().equals("STAGE 1 HYPERTENSION"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBloodPressureClassification().toUpperCase().equals("STAGE 1 HYPERTENSION")) {
 				count++;
 			}
 		}
@@ -179,13 +152,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have STAGE 2 HYPERTENSION Blood Pressure values
 	 * @return - amount of patients with STAGE 2 HYPERTENSION Blood Pressure values
 	 */
-	public int countStage2HypertensionBloodPressure()
-	{
+	public int countStage2HypertensionBloodPressure() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBloodPressureClassification().toUpperCase().equals("STAGE 2 HYPERTENSION"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBloodPressureClassification().toUpperCase().equals("STAGE 2 HYPERTENSION")) {
 				count++;
 			}
 		}
@@ -196,13 +166,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have PREHYPERTENSION Blood Pressure values
 	 * @return - amount of patients with PREHYPERTENSION Blood Pressure values
 	 */
-	public int countPrehypertensionBloodPressure()
-	{
+	public int countPrehypertensionBloodPressure() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBloodPressureClassification().toUpperCase().equals("PREHYPERTENSION"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBloodPressureClassification().toUpperCase().equals("PREHYPERTENSION")) {
 				count++;
 			}
 		}
@@ -213,13 +180,10 @@ public class ScreenResults implements Serializable{
 	 * Calculates how many patients have HYPERTENSIVE CRISIS Blood Pressure values
 	 * @return - amount of patients with HYPERTENSIVE CRISIS Blood Pressure values
 	 */
-	public int countHypertensionCrisisBloodPressure()
-	{
+	public int countHypertensionCrisisBloodPressure() {
 		int count = 0;
-		for(Patient patient : patients)
-		{
-			if(patient.getBloodPressureClassification().toUpperCase().equals("HYPERTENSIVE CRISIS"))
-			{
+		for(Patient patient : patients) {
+			if(patient.getBloodPressureClassification().toUpperCase().equals("HYPERTENSIVE CRISIS")) {
 				count++;
 			}
 		}
@@ -229,8 +193,7 @@ public class ScreenResults implements Serializable{
 	/**
 	 * Display a report of all of the patient screenings for the entire day to the console
 	 */
-	public String toString()
-	{
+	public String toString() {
 		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 		String date = dateFormat.format(dateOfScreening);
 		String message = "Health Screening Results\n \n" + 
@@ -296,7 +259,7 @@ public class ScreenResults implements Serializable{
 						 "STAGE 1 HYPERTENSION " + bloodPressureData[2] + "\n" +
 						 "STAGE 2 HYPERTENSION " + bloodPressureData[3] + "\n" +
 						 "HYPERTENSION CRISIS " + bloodPressureData[4] + "\n";
-	
+		
 		System.out.println(report);
 		
 		new ChartBuilder(cholesterolData, bmiData, bloodPressureData).createPage();

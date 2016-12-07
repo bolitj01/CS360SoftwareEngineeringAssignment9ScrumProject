@@ -1,14 +1,6 @@
-package HealthScreener;
+package model;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.beetledev.www.BmiServiceSoapProxy;
-import com.beetledev.www.ConverterServiceSoapProxy;
 
 /**
  * The Patient class describes the traits of a health patient screening
@@ -16,6 +8,8 @@ import com.beetledev.www.ConverterServiceSoapProxy;
  * @author Caleb Gordon
  */
 public class Patient implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private String dateOfScreening;
 	private int age;
@@ -32,20 +26,52 @@ public class Patient implements Serializable{
 	/**
 	 * Constructor which defines a new patient with the given input parameters
 	 */
-	public Patient(String _name, String _date, int _age, String _height, int _weight, double _bmi, int _cholesterol, int _systolic, 
-			int _diastolic, String _cholesterolClassification, String _bmiClassification, String _bloodPressureClassification) {
-		name = _name; 
-		dateOfScreening = _date;
-		age = _age;
-		height = _height;
-		weight = _weight;
-		cholesterol = _cholesterol;
-		systolic = _systolic;
-		diastolic = _diastolic;
-		bmi = _bmi;
-		cholesterolClassification = _cholesterolClassification;
-		bmiClassification = _bmiClassification;
-		bloodPressureClassification = _bloodPressureClassification;
+	public Patient(String name, String date, int age, String height, int weight, double bmi, int cholesterol, int systolic, 
+			int diastolic, String cholesterolClassification, String bmiClassification, String bloodPressureClassification) {
+		this.name = name; 
+		this.dateOfScreening = date;
+		this.age = age;
+		this.height = height;
+		this.weight = weight;
+		this.cholesterol = cholesterol;
+		this.systolic = systolic;
+		this.diastolic = diastolic;
+		this.bmi = bmi;
+		this.cholesterolClassification = cholesterolClassification;
+		this.bmiClassification = bmiClassification;
+		this.bloodPressureClassification = bloodPressureClassification;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int getAge(){
+		return age;
+	}
+	
+	public String getHeight(){
+		return height;
+	}
+	
+	public int getWeight(){
+		return weight;
+	}
+	
+	public int getCholesterol(){
+		return cholesterol;
+	}
+	
+	public int getSystolicBloodPressure(){
+		return systolic;
+	}
+	
+	public int getDiastolicBloodPressure(){
+		return diastolic;
+	}
+	
+	public double getBMI(){
+		return bmi;
 	}
 	
 	public String getDate(){
@@ -63,25 +89,4 @@ public class Patient implements Serializable{
 	public String getBloodPressureClassification(){
 		return bloodPressureClassification;
 	}
-	
-	
-//	/**
-//	 * Displays a report of the patient's screening in the console
-//	 */
-//	public void displayPatientReport() {
-//		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-//		String date = dateFormat.format(dateOfScreening);
-//		int feet = height/12;
-//		int remaining_inches = height % 12;
-//		DecimalFormat decim = new DecimalFormat("#.#");
-//		
-//		System.out.println("Health Screening for " + name + "\n");
-//		System.out.println("Date: " + date);
-//		System.out.println("Age: " + age + "\t\tHeight: " + feet + "\' " + remaining_inches + "\"\t\tWeight: " + weight + "\n");
-//		System.out.println("Total Cholesterol: " + cholesterol + " " + getCholesterolClassification());
-//		System.out.println("Body Mass Index: " + decim.format(bmi) + " " + getBMIClassification());
-//		System.out.println("Blood Pressure: " + systolic + "/" + diastolic + " " + getBloodPressureClassification());
-//	}
-	
-	
 }

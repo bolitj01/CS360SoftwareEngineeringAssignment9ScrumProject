@@ -1,8 +1,10 @@
-package HealthScreener;
+package classificationTests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import model.HealthScreenUtility;
 
 public class CholesterolClassificationTester {
 
@@ -16,13 +18,13 @@ public class CholesterolClassificationTester {
 	}
 	
 	@Test
-	public void cholesterolBorderlineHighTest_A() {
+	public void cholesterolBorderlineHighTestA() {
 		String cholesterol = utility.getCholesterolClassification(238);
 		assertEquals("BORDERLINE HIGH", cholesterol);
 	}
 	
 	@Test
-	public void cholesterolBorderlineHighTest_B() {
+	public void cholesterolBorderlineHighTestB() {
 		String cholesterol = utility.getCholesterolClassification(201);
 		assertEquals("BORDERLINE HIGH", cholesterol);
 	}

@@ -1,10 +1,9 @@
-/**
- * 
- */
-package HealthScreener;
+package fileIO;
 
 
 import java.io.*;
+
+import model.ScreenResults;
 
 /**
  * @author Donovan Laptop-4k
@@ -16,17 +15,13 @@ public class ResultsFileWriter {
 	private File dir;
 	
 	/**
-	 * Constructor of class
+	 * Creates directory if doesn't exist, and sets up file and object streams
 	 */
-	public ResultsFileWriter(String filename)
-	{
+	public ResultsFileWriter(String filename) {
 		try{
 			dir = new File("ScreenResultsHistory");
-			boolean success = dir.mkdir();
-			if (success){
-				System.out.println("Made directory");
-				System.out.println(dir.getAbsolutePath());
-			}
+			dir.mkdir();
+			
 			fos = new FileOutputStream(dir.getAbsolutePath() + File.separator + filename);
 			oos = new ObjectOutputStream(fos);
 		} catch (Exception e){
@@ -34,6 +29,9 @@ public class ResultsFileWriter {
 		}
 	}
 	
+	/**
+	 * Save a ScreenResults object to the file fileName
+	 */
 	public void saveScreenResults(ScreenResults screenResults){
 		try{
 			oos.writeObject(screenResults);
@@ -42,6 +40,9 @@ public class ResultsFileWriter {
 		}
 	}
 	
+	/**
+	 * Closes the file and object streams
+	 */
 	public void closeStreams(){
 		try{
 			if (fos != null){

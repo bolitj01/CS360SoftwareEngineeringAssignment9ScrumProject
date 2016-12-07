@@ -13,12 +13,11 @@
  * 
  */
 
-package HealthScreener;
+package model;
 
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -31,8 +30,8 @@ import de.toolforge.googlechartwrapper.label.ChartTitle;
 
 public class ChartBuilder {
 	
-	final int CHART_WIDTH = 600;
-	final int CHART_HEIGHT = 400;
+	private final int chartWidth = 600;
+	private final int chartHeight = 400;
 	
 	private int[] totalCholesterolData;
 	private int[] bodyMassIndexData;
@@ -134,7 +133,7 @@ public class ChartBuilder {
 			return "Data and label arrays must be of the same length";
 		}
 		
-		PieChart chart = new PieChart(new Dimension(CHART_WIDTH, CHART_HEIGHT));
+		PieChart chart = new PieChart(new Dimension(chartWidth, chartHeight));
 		
 		chart.setChartTitle(new ChartTitle(title));
 		chart.addChartColor(new ChartColor(color));

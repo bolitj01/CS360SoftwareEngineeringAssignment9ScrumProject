@@ -1,8 +1,10 @@
-package HealthScreener;
+package classificationTests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import model.HealthScreenUtility;
 
 public class BMIClassificationTester {
 
@@ -16,25 +18,25 @@ public class BMIClassificationTester {
 	}
 	
 	@Test
-	public void bmiOverweightTest_A() {
+	public void bmiOverweightTestA() {
 		String bmiClassification = utility.getBMIClassification(140, 62, null);
 		assertEquals("OVERWEIGHT", bmiClassification);
 	}
 	
 	@Test
-	public void bmiOverweightTest_B() {
+	public void bmiOverweightTestB() {
 		String bmiClassification = utility.getBMIClassification(220, 73, null);
 		assertEquals("OVERWEIGHT", bmiClassification);
 	}
 	
 	@Test
-	public void bmiNormalTest_A() {
+	public void bmiNormalTestA() {
 		String bmiClassification = utility.getBMIClassification(130, 70, null);
 		assertEquals("NORMAL", bmiClassification);
 	}
 	
 	@Test
-	public void bmiNormalTest_B() {
+	public void bmiNormalTestB() {
 		String bmiClassification = utility.getBMIClassification(140, 64, null);
 		assertEquals("NORMAL", bmiClassification);
 	}
