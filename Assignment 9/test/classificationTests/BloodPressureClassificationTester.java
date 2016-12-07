@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import model.HealthScreenUtility;
 
+import model.HealthScreenUtility;
+
 public class BloodPressureClassificationTester {
 	
 	private HealthScreenUtility utility = new HealthScreenUtility();

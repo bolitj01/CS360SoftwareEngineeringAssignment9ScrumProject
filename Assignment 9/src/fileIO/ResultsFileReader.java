@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import model.ScreenResults;
 
+import model.ScreenResults;
+
 public class ResultsFileReader {
 	private FileInputStream fis;
 	private ObjectInputStream ois;

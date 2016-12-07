@@ -5,6 +5,8 @@ import java.io.*;
 
 import model.ScreenResults;
 
+import model.ScreenResults;
+
 /**
  * @author Donovan Laptop-4k
  *
