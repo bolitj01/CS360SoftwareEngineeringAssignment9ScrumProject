@@ -2,39 +2,45 @@ package classificationTests;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import model.HealthScreenUtility;
 
-import model.HealthScreenUtility;
-
+@RunWith(Parameterized.class)
 public class CholesterolClassificationTester {
 
-	private HealthScreenUtility utility = new HealthScreenUtility();
+	private HealthScreenUtility utility;
+	private int cholesterol;
+	private String classification;
 	
-	// Cholesterol Tests
-	@Test
-	public void cholesterolHighTest() {
-		String cholesterol = utility.getCholesterolClassification(241);
-		assertEquals("HIGH", cholesterol);
+	@Before
+	public void initialize(){
+		utility = new HealthScreenUtility();
 	}
 	
-	@Test
-	public void cholesterolBorderlineHighTestA() {
-		String cholesterol = utility.getCholesterolClassification(238);
-		assertEquals("BORDERLINE HIGH", cholesterol);
+	public CholesterolClassificationTester(int cholesterol, String classification){
+		this.cholesterol = cholesterol;
+		this.classification = classification;
 	}
 	
+	@Parameterized.Parameters
+	public static Collection cholesterols(){
+		return Arrays.asList(new Object[][]{
+			{241, "HIGH"},
+			{238, "BORDERLINE HIGH"},
+			{201, "BORDERLINE HIGH"},
+			{199, "DESIRABLE"}
+		});
+	}
 	@Test
 	public void cholesterolBorderlineHighTestB() {
-		String cholesterol = utility.getCholesterolClassification(201);
-		assertEquals("BORDERLINE HIGH", cholesterol);
-	}
-	
-	@Test
-	public void cholesterolDesirableTest() {
-		String cholesterol = utility.getCholesterolClassification(199);
-		assertEquals("DESIRABLE", cholesterol);
+		assertEquals(classification, utility.getCholesterolClassification(cholesterol));
 	}
 
 }

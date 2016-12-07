@@ -28,6 +28,7 @@ public class ResultsFileReader {
 	public ScreenResults readScreenResults(String fileName) {
 		ScreenResults screenResults = null;
 		try {
+			System.out.println(fileName);
 			fis = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
 			ois = new ObjectInputStream(fis);
 			screenResults = (ScreenResults)ois.readObject();

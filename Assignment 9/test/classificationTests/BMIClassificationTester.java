@@ -2,57 +2,53 @@ package classificationTests;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import model.HealthScreenUtility;
 
-import model.HealthScreenUtility;
-
+@RunWith(Parameterized.class)
 public class BMIClassificationTester {
 
-	private HealthScreenUtility utility = new HealthScreenUtility();
+	private HealthScreenUtility utility;
+	private int weight;
+	private int height;
+	private String websiteString;
+	private String classification;
 	
-	// BMI tests
-	@Test
-	public void bmiObeseTest() {
-		String bmiClassification = utility.getBMIClassification(150, 58, null);
-		assertEquals("OBESE", bmiClassification);
+	@Before
+	public void intialize(){
+		utility = new HealthScreenUtility();
+	}
+	
+	public BMIClassificationTester(int weight, int height, String websiteString, String classification){
+		this.weight = weight;
+		this.height = height;
+		this.websiteString = websiteString;
+		this.classification = classification;
+	}
+	
+	@Parameterized.Parameters
+	public static Collection bmiData(){
+		return Arrays.asList(new Object[][] {
+			{150, 58, null, "OBESE"},
+			{140, 62, null, "OVERWEIGHT"},
+			{220, 73, null, "OVERWEIGHT"},
+			{130, 70, null, "NORMAL"},
+			{140, 64, null, "NORMAL"},
+			{95, 62, null, "UNDERWEIGHT"},
+			{95, 62, "http://fakewebsite.com", "UNDERWEIGHT"}
+		});
 	}
 	
 	@Test
-	public void bmiOverweightTestA() {
-		String bmiClassification = utility.getBMIClassification(140, 62, null);
-		assertEquals("OVERWEIGHT", bmiClassification);
-	}
-	
-	@Test
-	public void bmiOverweightTestB() {
-		String bmiClassification = utility.getBMIClassification(220, 73, null);
-		assertEquals("OVERWEIGHT", bmiClassification);
-	}
-	
-	@Test
-	public void bmiNormalTestA() {
-		String bmiClassification = utility.getBMIClassification(130, 70, null);
-		assertEquals("NORMAL", bmiClassification);
-	}
-	
-	@Test
-	public void bmiNormalTestB() {
-		String bmiClassification = utility.getBMIClassification(140, 64, null);
-		assertEquals("NORMAL", bmiClassification);
-	}
-	
-	@Test
-	public void bmiUnderweightTest() {
-		String bmiClassification = utility.getBMIClassification(95, 62, null);
-		assertEquals("UNDERWEIGHT", bmiClassification);
-	}
-	
-	@Test
-	public void bmiRemoteExceptionTest() {
-		String bmiClassification = utility.getBMIClassification(95, 62, "http://fakewebsite.com");
-		assertEquals("UNDERWEIGHT", bmiClassification);
+	public void bmiTest() {
+		assertEquals(classification, utility.getBMIClassification(weight, height, websiteString));
 	}
 
 }

@@ -2,150 +2,66 @@ package classificationTests;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import model.HealthScreenUtility;
 
-import model.HealthScreenUtility;
-
+@RunWith(Parameterized.class)
 public class BloodPressureClassificationTester {
 	
-	private HealthScreenUtility utility = new HealthScreenUtility();
+	private HealthScreenUtility utility;
+	private int systolic;
+	private int diastolic;
+	private String classification;
 
-	// Hypertensive Crisis test
-	@Test
-	public void bloodPressureHypertensiveCrisisTestA() {
-		String bloodPressure = utility.getBloodPressureClassification(181, 100);
-		assertEquals("HYPERTENSIVE CRISIS", bloodPressure);
+	@Before
+	public void initialize(){
+		utility = new HealthScreenUtility();
+	}
+	
+	public BloodPressureClassificationTester(int systolic, int diastolic, String classification){
+		this.systolic = systolic;
+		this.diastolic = diastolic;
+		this.classification = classification;
+	}
+	
+	@Parameterized.Parameters
+	public static Collection bloodPressures() {
+		return Arrays.asList(new Object[][] {
+			{181, 100, "HYPERTENSIVE CRISIS"},
+			{181, 111, "HYPERTENSIVE CRISIS"},
+			{179, 111, "HYPERTENSIVE CRISIS"},
+			{161, 105, "STAGE 2 HYPERTENSION"},
+			{179, 105, "STAGE 2 HYPERTENSION"},
+			{171, 101, "STAGE 2 HYPERTENSION"},
+			{170, 109, "STAGE 2 HYPERTENSION"},
+			{170, 90, "STAGE 2 HYPERTENSION"},
+			{150, 105, "STAGE 2 HYPERTENSION"},
+			{141, 95, "STAGE 1 HYPERTENSION"},
+			{158, 95, "STAGE 1 HYPERTENSION"},
+			{150, 91, "STAGE 1 HYPERTENSION"},
+			{150, 98, "STAGE 1 HYPERTENSION"},
+			{150, 85, "STAGE 1 HYPERTENSION"},
+			{125, 95, "STAGE 1 HYPERTENSION"},
+			{121, 85, "PREHYPERTENSION"},
+			{138, 85, "PREHYPERTENSION"},
+			{130, 81, "PREHYPERTENSION"},
+			{130, 88, "PREHYPERTENSION"},
+			{125, 75, "PREHYPERTENSION"},
+			{115, 85, "PREHYPERTENSION"},
+			{119, 79, "NORMAL"}
+		});
 	}
 	
 	@Test
-	public void bloodPressureHypertensiveCrisisTestB() {
-		String bloodPressure = utility.getBloodPressureClassification(181, 111);
-		assertEquals("HYPERTENSIVE CRISIS", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureHypertensiveCrisisTestC() {
-		String bloodPressure = utility.getBloodPressureClassification(179, 111);
-		assertEquals("HYPERTENSIVE CRISIS", bloodPressure);
-	}
-	
-	// Stage 2 Hypertension tests
-	@Test
-	public void bloodPressureStage2HypertensionTestA() {
-		String bloodPressure = utility.getBloodPressureClassification(161, 105);
-		assertEquals("STAGE 2 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage2HypertensionTestB() {
-		String bloodPressure = utility.getBloodPressureClassification(179, 105);
-		assertEquals("STAGE 2 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage2HypertensionTestC() {
-		String bloodPressure = utility.getBloodPressureClassification(170, 101);
-		assertEquals("STAGE 2 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage2HypertensionTestD() {
-		String bloodPressure = utility.getBloodPressureClassification(170, 109);
-		assertEquals("STAGE 2 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage2HypertensionTestE() {
-		String bloodPressure = utility.getBloodPressureClassification(170, 90);
-		assertEquals("STAGE 2 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage2HypertensionTestF() {
-		String bloodPressure = utility.getBloodPressureClassification(150, 105);
-		assertEquals("STAGE 2 HYPERTENSION", bloodPressure);
-	}
-	
-	// Stage 1 Hypertension tests
-	@Test
-	public void bloodPressureStage1HypertensionTestA() {
-		String bloodPressure = utility.getBloodPressureClassification(141, 95);
-		assertEquals("STAGE 1 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage1HypertensionTestB() {
-		String bloodPressure = utility.getBloodPressureClassification(158, 95);
-		assertEquals("STAGE 1 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage1HypertensionTestC() {
-		String bloodPressure = utility.getBloodPressureClassification(150, 91);
-		assertEquals("STAGE 1 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage1HypertensionTestD() {
-		String bloodPressure = utility.getBloodPressureClassification(150, 98);
-		assertEquals("STAGE 1 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage1HypertensionTestE() {
-		String bloodPressure = utility.getBloodPressureClassification(150, 85);
-		assertEquals("STAGE 1 HYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureStage1HypertensionTestF() {
-		String bloodPressure = utility.getBloodPressureClassification(125, 95);
-		assertEquals("STAGE 1 HYPERTENSION", bloodPressure);
-	}
-	
-	// Prehypertension tests
-	@Test
-	public void bloodPressurePrehypertensionTestA() {
-		String bloodPressure = utility.getBloodPressureClassification(121, 85);
-		assertEquals("PREHYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressurePrehypertensionTestB() {
-		String bloodPressure = utility.getBloodPressureClassification(138, 85);
-		assertEquals("PREHYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressurePrehypertensionTestC() {
-		String bloodPressure = utility.getBloodPressureClassification(130, 81);
-		assertEquals("PREHYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressurePrehypertensionTestD() {
-		String bloodPressure = utility.getBloodPressureClassification(130, 88);
-		assertEquals("PREHYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressurePrehypertensionTestE() {
-		String bloodPressure = utility.getBloodPressureClassification(125, 75);
-		assertEquals("PREHYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressurePrehypertensionTestF() {
-		String bloodPressure = utility.getBloodPressureClassification(115, 85);
-		assertEquals("PREHYPERTENSION", bloodPressure);
-	}
-	
-	@Test
-	public void bloodPressureNormalTest() {
-		String bloodPressure = utility.getBloodPressureClassification(119, 79);
-		assertEquals("NORMAL", bloodPressure);
+	public void bloodPressureClassificationTest() {
+		assertEquals(classification, utility.getBloodPressureClassification(systolic, diastolic));
 	}
 
 }
