@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import javax.swing.*;
@@ -249,7 +251,11 @@ public class HealthScreenerGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (patients.size() != 0){
-					ResultsFileWriter rfw = new ResultsFileWriter(currentDate.toString() + ".ser");
+					LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					int year = localDate.getYear();
+					int month = localDate.getMonthValue();
+					int day = localDate.getDayOfMonth();
+					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".ser");
 					ScreenResults screenResults = new ScreenResults(currentDate, patients);
 					rfw.saveScreenResults(screenResults);
 					rfw.closeStreams();
@@ -353,7 +359,7 @@ public class HealthScreenerGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (patients.size() == 0){
-					JOptionPane.showMessageDialog(null,  "No Screenings have been saved yet.", "Print Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,  "No Screenings have been saved today.", "Print Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				ScreenResults results = new ScreenResults(currentDate,patients);
@@ -369,9 +375,14 @@ public class HealthScreenerGUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				ResultsFileReader rfr = new ResultsFileReader();
 				String[] fileNames = rfr.getFileNames(".ser");
+				if (fileNames == null || fileNames.length == 0){
+					JOptionPane.showMessageDialog(null, "There are no past screenings.", "Load Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				if (fileNames.length != 0){
 					new ScreeningSelectionWindow(thisGUI, fileNames);
 				}
+				rfr.closeStreams();
 			}
 		};
 		

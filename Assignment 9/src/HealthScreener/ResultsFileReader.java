@@ -46,6 +46,10 @@ public class ResultsFileReader {
 		
 		String[] list = dir.list();
 		
+		if (list == null || list.length == 0){
+			return null;
+		}
+		
 		ArrayList<String> legitimateFileNames = new ArrayList<>();
 		
 		for(String fileName: list)
