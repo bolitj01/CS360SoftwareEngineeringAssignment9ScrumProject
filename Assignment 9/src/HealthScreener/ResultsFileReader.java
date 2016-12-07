@@ -23,8 +23,8 @@ public class ResultsFileReader {
 	{
 		ScreenResults screenResults = null;
 		try {
-			System.out.println(dir.getAbsolutePath() + "/" + fileName);
-			fis = new FileInputStream(dir.getAbsolutePath() + "/" + fileName);
+			System.out.println(dir.getAbsolutePath() + File.separator + fileName);
+			fis = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
 			ois = new ObjectInputStream(fis);
 			screenResults = (ScreenResults)ois.readObject();
 		} catch (Exception e) {
