@@ -656,8 +656,7 @@ public class HealthScreenerGUI extends JFrame{
 		bloodPressureDiastolicTextField.setEnabled(false);
 		saveButton.setEnabled(false);
 		printButton.setEnabled(false);
-		loadButton.setEnabled(false);
-		
+		loadButton.setEnabled(false);	
 	}
 	
 	public void enableFields(){
