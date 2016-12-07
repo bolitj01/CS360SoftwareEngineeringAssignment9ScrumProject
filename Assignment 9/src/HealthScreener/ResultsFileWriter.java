@@ -27,7 +27,7 @@ public class ResultsFileWriter {
 				System.out.println("Made directory");
 				System.out.println(dir.getAbsolutePath());
 			}
-			fos = new FileOutputStream(dir.getAbsolutePath() + "/" + filename);
+			fos = new FileOutputStream(dir.getAbsolutePath() + File.separator + filename);
 			oos = new ObjectOutputStream(fos);
 		} catch (Exception e){
 			e.printStackTrace();
