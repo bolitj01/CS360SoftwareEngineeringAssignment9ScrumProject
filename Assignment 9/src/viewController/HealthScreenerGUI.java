@@ -266,7 +266,7 @@ public class HealthScreenerGUI extends JFrame{
 					int year = localDate.getYear();
 					int month = localDate.getMonthValue();
 					int day = localDate.getDayOfMonth();
-					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".txt");
+					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".ser");
 					ScreenResults screenResults = new ScreenResults(currentDate, patients);
 					rfw.saveScreenResults(screenResults);
 					rfw.closeStreams();
@@ -431,7 +431,7 @@ public class HealthScreenerGUI extends JFrame{
 		}
 		
 		String lastName = nameLastTextField.getText();
-		if (firstName == null || firstName.trim().isEmpty()){
+		if (lastName == null || lastName.trim().isEmpty()){
 			JOptionPane.showMessageDialog(null, "Please enter a last name.", "Name Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}

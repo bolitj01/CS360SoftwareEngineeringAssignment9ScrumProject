@@ -17,9 +17,11 @@ public class ScreeningSelectionWindow extends JFrame{
 	 * Displays a small window with a list of past screening files to choose from.
 	 */
 	public ScreeningSelectionWindow(HealthScreenerGUI healthScreenerGUI, String[] fileNames){
-		UIManager.put("Panel.background", HealthScreenerGUI.BACKCOLOR);
+//		UIManager.put("Panel.background", );
 		UIManager.put("List.background", Color.white);
 //		UIManager.put("Label.background", HealthScreenerGUI.backColor);
+		
+		Color backColor = HealthScreenerGUI.BACKCOLOR;
 		
 		int width = 200;
 		int height = 250;
@@ -31,8 +33,10 @@ public class ScreeningSelectionWindow extends JFrame{
 		setLayout(new BorderLayout());
 		
 		JPanel mainPanel = new JPanel();
+		mainPanel.setBackground(backColor);
 		
 		JPanel titlePanel = new JPanel();
+		titlePanel.setBackground(backColor);
 		
 		JLabel titleLabel = new JLabel("Select a Past Screening");
 		titleLabel.setPreferredSize(new Dimension(width, height / 5));
