@@ -60,7 +60,7 @@ public class ScreeningSelectionWindow extends JFrame{
 					return;
 				}
 				ResultsFileReader rfr = new ResultsFileReader();
-				ScreenResults screenResults = rfr.readScreenResults(fileList.getSelectedValue() + ".ser");
+				ScreenResults screenResults = rfr.readScreenResults(fileList.getSelectedValue() + ".screenresults");
 				screenResults.generateReport();
 				rfr.closeStreams();
 				healthScreenerGUI.enableFields();
