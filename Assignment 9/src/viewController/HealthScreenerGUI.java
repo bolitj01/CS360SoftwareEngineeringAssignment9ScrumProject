@@ -266,7 +266,7 @@ public class HealthScreenerGUI extends JFrame{
 					int year = localDate.getYear();
 					int month = localDate.getMonthValue();
 					int day = localDate.getDayOfMonth();
-					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".ser");
+					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".screenresults");
 					ScreenResults screenResults = new ScreenResults(currentDate, patients);
 					rfw.saveScreenResults(screenResults);
 					rfw.closeStreams();
@@ -401,7 +401,7 @@ public class HealthScreenerGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ResultsFileReader rfr = new ResultsFileReader();
-				String[] fileNames = rfr.getFileNames(".ser");
+				String[] fileNames = rfr.getFileNames(".screenresults");
 				if (fileNames == null || fileNames.length == 0){
 					JOptionPane.showMessageDialog(null, "There are no past screenings.", "Load Error", JOptionPane.ERROR_MESSAGE);
 					return;
