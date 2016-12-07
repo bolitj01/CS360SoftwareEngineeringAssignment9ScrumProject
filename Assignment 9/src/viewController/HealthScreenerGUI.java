@@ -1,4 +1,4 @@
-package HealthScreener;
+package viewController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,21 +7,26 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import fileIO.ResultsFileReader;
+import fileIO.ResultsFileWriter;
+import model.HealthScreenUtility;
+import model.Patient;
+import model.ScreenResults;
+
 public class HealthScreenerGUI extends JFrame{
 
-	public static final Color backColor = new Color(160, 200, 255);
+	private static final long serialVersionUID = 1L;
 
-	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final Color BACKCOLOR = new Color(160, 200, 255);
 	
 	private JTextField nameFirstTextField;
 	private JTextField nameLastTextField;
@@ -54,7 +59,6 @@ public class HealthScreenerGUI extends JFrame{
 
 	private String name;
 	private int age;
-	private int height;
 	private int heightFeet;
 	private double heightInches;
 	private int weight;
@@ -66,6 +70,9 @@ public class HealthScreenerGUI extends JFrame{
 	private String bmiClassification;
 	private String bloodPressureClassification;
 
+	/**
+	 * Creates a GUI to conduct patient health screenings
+	 */
 	public HealthScreenerGUI(){
 		
 		HealthScreenerGUI thisGUI = this;
@@ -86,7 +93,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Intro name section
 		JPanel namePanel = new JPanel(flowLeft);
-		namePanel.setBackground(backColor);
+		namePanel.setBackground(BACKCOLOR);
 
 		JLabel nameHeader = new JLabel("Health Screening for: ");
 		namePanel.add(nameHeader);
@@ -102,7 +109,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Date
 		JPanel datePanel = new JPanel(flowLeft);
-		datePanel.setBackground(backColor);
+		datePanel.setBackground(BACKCOLOR);
 
 		Date currentDate = new Date();
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -114,7 +121,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Age
 		JPanel agePanel = new JPanel(flowLeft);
-		agePanel.setBackground(backColor);
+		agePanel.setBackground(BACKCOLOR);
 		agePanel.setBorder(new EmptyBorder(0,0,0,10));
 
 		JLabel ageHeader = new JLabel("Age: ");
@@ -127,13 +134,13 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Height
 		JPanel heightPanel = new JPanel(flowLeft);
-		heightPanel.setBackground(backColor);
+		heightPanel.setBackground(BACKCOLOR);
 
 		JLabel heightHeader = new JLabel("Height: ");
 		heightPanel.add(heightHeader);
 
 		JPanel feetPanel = new JPanel(new BorderLayout());
-		feetPanel.setBackground(backColor);
+		feetPanel.setBackground(BACKCOLOR);
 		feetPanel.setBorder(new EmptyBorder(0,0,0,5));
 
 		heightFeetTextField = new JTextField(3);
@@ -147,7 +154,7 @@ public class HealthScreenerGUI extends JFrame{
 		heightPanel.add(feetPanel);
 
 		JPanel inchesPanel = new JPanel(new BorderLayout());
-		inchesPanel.setBackground(backColor);
+		inchesPanel.setBackground(BACKCOLOR);
 		inchesPanel.setBorder(new EmptyBorder(0,0,0,10));
 
 		heightInchesTextField = new JTextField(3);
@@ -167,7 +174,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Weight
 		JPanel weightPanel = new JPanel(flowLeft);
-		weightPanel.setBackground(backColor);
+		weightPanel.setBackground(BACKCOLOR);
 
 		JLabel weightHeader = new JLabel("Weight: ");
 		weightPanel.add(weightHeader);
@@ -180,7 +187,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Cholesterol
 		JPanel cholesterolPanel = new JPanel(flowLeft);
-		cholesterolPanel.setBackground(backColor);
+		cholesterolPanel.setBackground(BACKCOLOR);
 
 		JLabel cholesterolHeader = new JLabel("Total Cholesterol: ");
 		cholesterolPanel.add(cholesterolHeader);
@@ -196,7 +203,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//BMI
 		JPanel bmiPanel = new JPanel(flowLeft);
-		bmiPanel.setBackground(backColor);
+		bmiPanel.setBackground(BACKCOLOR);
 
 		JLabel bmiHeader = new JLabel("Body Mass Index: ");
 		bmiPanel.add(bmiHeader);
@@ -211,7 +218,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Blood Pressure
 		JPanel bloodPressurePanel = new JPanel(flowLeft);
-		bloodPressurePanel.setBackground(backColor);
+		bloodPressurePanel.setBackground(BACKCOLOR);
 
 		JLabel bloodPressureHeader = new JLabel("Blood Pressure: ");
 		bloodPressurePanel.add(bloodPressureHeader);
@@ -234,7 +241,7 @@ public class HealthScreenerGUI extends JFrame{
 
 		//Buttons
 		JPanel controlPanel = new JPanel(flowLeft);
-		controlPanel.setBackground(backColor);
+		controlPanel.setBackground(BACKCOLOR);
 
 		saveButton = new JButton("Save");
 		controlPanel.add(saveButton);
@@ -246,6 +253,10 @@ public class HealthScreenerGUI extends JFrame{
 		controlPanel.add(loadButton);
 
 		exitButton = new JButton("Exit");
+		/**
+		 * Saves all the patient data to a file with the file format MM-DD-YYYY.ser (Date).
+		 * Then exits the program.
+		 */
 		exitButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -255,7 +266,7 @@ public class HealthScreenerGUI extends JFrame{
 					int year = localDate.getYear();
 					int month = localDate.getMonthValue();
 					int day = localDate.getDayOfMonth();
-					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".ser");
+					ResultsFileWriter rfw = new ResultsFileWriter(month + "-" + day + "-" + year + ".txt");
 					ScreenResults screenResults = new ScreenResults(currentDate, patients);
 					rfw.saveScreenResults(screenResults);
 					rfw.closeStreams();
@@ -271,8 +282,10 @@ public class HealthScreenerGUI extends JFrame{
 		setLocationRelativeTo(null);
 
 
-		//Add text field and button functionality
 
+		/**
+		 * Remove text from the text field upon clicking.
+		 */
 		MouseAdapter clearTextFieldOnFirstClickListener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -283,6 +296,9 @@ public class HealthScreenerGUI extends JFrame{
 		};
 		nameFirstTextField.addMouseListener(clearTextFieldOnFirstClickListener);
 
+		/**
+		 * Removes text from text field upon gaining focus.
+		 */
 		nameLastTextField.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e){
 				JTextField thisTextField = (JTextField)e.getComponent();
@@ -291,6 +307,11 @@ public class HealthScreenerGUI extends JFrame{
 			}
 		});
 		
+		/**
+		 * Validates and gathers all data from the text fields, sets classifications,
+		 * and prompts user to verify data and submit. Then creates a Patient object
+		 * from the data and adds it to patients ArrayList
+		 */
 		ActionListener classificationListener = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				name = validateAndRetrieveName();
@@ -354,6 +375,9 @@ public class HealthScreenerGUI extends JFrame{
 
 		saveButton.addActionListener(classificationListener);
 		
+		/**
+		 * Generates the command line interface report and online pie charts for all the patients screened on the current day.
+		 */
 		ActionListener printListener = new ActionListener() {
 			
 			@Override
@@ -369,6 +393,9 @@ public class HealthScreenerGUI extends JFrame{
 		
 		printButton.addActionListener(printListener);
 		
+		/**
+		 * Creates a ScreeningSelectionWindow to load a previous day of health screenings
+		 */
 		ActionListener loadListener = new ActionListener() {
 			
 			@Override
@@ -393,6 +420,9 @@ public class HealthScreenerGUI extends JFrame{
 		
 	}
 	
+	/**
+	 * Validates and parses the patient name from the first and last name text fields
+	 */
 	private String validateAndRetrieveName(){
 		String firstName = nameFirstTextField.getText();
 		if (firstName == null || firstName.trim().isEmpty()){
@@ -408,6 +438,9 @@ public class HealthScreenerGUI extends JFrame{
 		return firstName + " " + lastName;
 	}
 	
+	/**
+	 * Validates and parses patient age from text field
+	 */
 	private int validateAndRetrieveAge(){
 		int age;
 		try{
@@ -431,6 +464,9 @@ public class HealthScreenerGUI extends JFrame{
 		return age;
 	}
 
+	/**
+	 * Validates and parses patient cholesterol from text field
+	 */
 	private int validateAndRetrieveCholesterol(){
 		int cholesterol;
 		try {
@@ -460,6 +496,10 @@ public class HealthScreenerGUI extends JFrame{
 
 	}
 
+	/**
+	 * Classifies the cholesterol based using HealthScreenUtility object helper methods.
+	 * Assigns classification to the cholesterol classification label.
+	 */
 	public boolean classifyCholesterol(){
 		if (cholesterolIsValid){
 			HealthScreenUtility hsu = new HealthScreenUtility();
@@ -471,6 +511,9 @@ public class HealthScreenerGUI extends JFrame{
 	}
 
 
+	/**
+	 * Validates and parses patient height feet from text field 
+	 */
 	public int validateAndRetrieveHeightFeet(){
 		int feet;
 		try {
@@ -498,6 +541,9 @@ public class HealthScreenerGUI extends JFrame{
 		return feet;
 	}
 
+	/**
+	 * Validates and parses patient height inches from text field.
+	 */
 	public double validateAndRetrieveHeightInches(){
 		double inches;
 		try {
@@ -506,7 +552,7 @@ public class HealthScreenerGUI extends JFrame{
 				inchesString = inchesString.trim();
 				inches = Double.parseDouble(inchesString);
 
-				if (!inchesString.matches("^[0-9]*\\.?[0-9]$") || (inches <= 0 || inches >= 12)){
+				if (!inchesString.matches("^[0-9]*\\.?[0-9]$") || (inches < 0 || inches >= 12)){
 					throw new NumberFormatException();
 				}
 			} else {
@@ -525,6 +571,9 @@ public class HealthScreenerGUI extends JFrame{
 		return inches;
 	}
 
+	/**
+	 * Validates and parses patient weight from text field.
+	 */
 	public int validateAndRetrieveWeight(){
 		int weight;
 		try {
@@ -539,8 +588,7 @@ public class HealthScreenerGUI extends JFrame{
 			if (weight <= 0){
 				throw new NumberFormatException();
 			}
-		}
-		catch (NumberFormatException e){
+		} catch (NumberFormatException e){
 			JOptionPane.showMessageDialog(null, "Please enter weight as an integer greater than 0.", "Weight Error", 
 					JOptionPane.ERROR_MESSAGE);
 			weight = -1;
@@ -554,10 +602,10 @@ public class HealthScreenerGUI extends JFrame{
 
 		return weight;
 	}
+	
 	/**
-	 * 
-	 * @param textField
-	 * @return
+	 * Classifies the BMI using HealthScreenUtility object helper method
+	 * Assigns classification to BMI classification label
 	 */
 	public boolean classifyBMI(){
 		if (heightFeetIsValid && heightInchesIsValid && weightIsValid){
@@ -571,6 +619,9 @@ public class HealthScreenerGUI extends JFrame{
 		return false;
 	}
 
+	/**
+	 * Validates and parses patient systolic blood pressure from text field.
+	 */
 	public int validateAndRetrieveSystolic(){
 		int systolic;
 		try{
@@ -601,6 +652,9 @@ public class HealthScreenerGUI extends JFrame{
 		return systolic;
 	}
 
+	/**
+	 * Validates and parses patient diastolic blood pressure from text field
+	 */
 	public int validateAndRetrieveDiastolic(){
 		int diastolic;
 		try{
@@ -630,6 +684,10 @@ public class HealthScreenerGUI extends JFrame{
 		return diastolic;
 	}
 
+	/**
+	 * Classify blood pressure using HealthScreenUtility helper methods.
+	 * Assigns classification to blood pressure classification label
+	 */
 	public boolean classifyBloodPressure(){
 		if (systolicIsValid && diastolicIsValid){
 			HealthScreenUtility hsu = new HealthScreenUtility();
@@ -640,6 +698,9 @@ public class HealthScreenerGUI extends JFrame{
 		return false;
 	}
 	
+	/**
+	 * Clears text data from all text fields
+	 */
 	public void clearFields(){
 		nameFirstTextField.setText("");
 		nameLastTextField.setText("");
@@ -655,6 +716,10 @@ public class HealthScreenerGUI extends JFrame{
 		bloodPressureClassificationLabel.setText("");
 	}
 	
+	/**
+	 * Disables all text fields and all buttons except exit button.
+	 * Used when a SreeningSelectionWindow is displayed to direct user control.
+	 */
 	public void disableFields(){
 		nameFirstTextField.setEnabled(false);
 		nameLastTextField.setEnabled(false);
@@ -670,6 +735,10 @@ public class HealthScreenerGUI extends JFrame{
 		loadButton.setEnabled(false);	
 	}
 	
+	/**
+	 * Enables all text fields and buttons.
+	 * Used after a ScreeningSelectionWindow is closed to re-enable user control on GUI.
+	 */
 	public void enableFields(){
 		nameFirstTextField.setEnabled(true);
 		nameLastTextField.setEnabled(true);
